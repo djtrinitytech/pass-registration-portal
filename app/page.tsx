@@ -1,0 +1,7 @@
+import { ArrowUpRight, CalendarDays, MapPin, ScanLine } from "lucide-react";
+import Link from "next/link";
+import { RegistrationForm } from "@/components/registration-form";
+
+export default function Home() {
+  return <main className="site-shell"><nav className="top-nav"><Link className="wordmark" href="/"><span className="brand-mark"><ScanLine size={18} /></span>ENTRY / 26</Link><div className="nav-links"><Link href="/admin">Desk portal</Link><Link className="nav-action" href="/gate">Gate scanner <ArrowUpRight size={15} /></Link></div></nav><section className="registration-layout"><div className="intro fade-up"><p className="eyebrow"><span className="live-dot" /> Registration is open</p><h1>Make your<br /><em>entrance.</em></h1><p className="intro-copy">Your access starts here. Register once, get your personal code, and bring it to the desk on event day.</p><div className="event-meta"><span><CalendarDays size={17} /> 18 October 2026</span><span><MapPin size={17} /> Main Auditorium</span></div></div><div className="form-column"><div className="form-heading"><p className="eyebrow">Step 01 / 01</p><h2>Reserve your entry</h2><p>Tell us where to send your confirmation.</p></div><RegistrationForm /></div></section><footer className="site-footer"><span>ENTRY / 26 <span className="muted">· Campus event access</span></span><span>Questions? Ask at the physical desk.</span></footer></main>;
+}
