@@ -148,3 +148,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #
 .crew-heading h2 { margin-bottom:0; }
 .crew-form-first .crew-instructions > p:not(.eyebrow) { max-width:none; }
 .crew-form-first .form-column { width:100%; }
+@media(min-width:801px) {
+  .garba-site .registration-layout.crew-form-first { max-width:1200px; grid-template-columns:minmax(0,480px) minmax(0,1fr); column-gap:9%; }
+  .crew-form-first .crew-heading { grid-column:1 / -1; }
+  .crew-form-first .crew-instructions { padding-top:12px; }
+}
