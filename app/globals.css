@@ -143,3 +143,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #
 .garba-site::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:url("/images/garba-motif-pattern.webp") repeat; background-size:545px 548px; filter:invert(1) grayscale(1) sepia(1) saturate(2) brightness(2); mix-blend-mode:screen; opacity:.25; }
 .hero-garba-image { max-width:365px; max-height:490px; width:100%; height:auto; object-fit:contain; }
 @media(max-width:540px) { .garba-site::before { background-size:390px 392px; opacity:.19; }.hero-garba-image { max-width:270px; max-height:none; } }
+/* Show the complete form before collection instructions at every screen size. */
+.garba-site .registration-layout.crew-form-first { grid-template-columns:minmax(0,1fr); max-width:780px; gap:28px; }
+.crew-heading h2 { margin-bottom:0; }
+.crew-form-first .crew-instructions > p:not(.eyebrow) { max-width:none; }
+.crew-form-first .form-column { width:100%; }
