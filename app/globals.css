@@ -50,3 +50,96 @@ button:disabled { cursor: wait; opacity: .55; }
 .gate-screen { min-height: 100vh; padding: 22px clamp(18px, 5vw, 58px); color: #ecf2ed; background: #15201d; font-family: Arial, sans-serif; }.gate-screen.success { background: #164a38; }.gate-screen.danger { background: #5b2422; }.gate-topbar { display: flex; align-items: center; justify-content: space-between; max-width: 700px; margin: auto; font-size: 11px; letter-spacing: .14em; }.gate-brand { display: flex; align-items: center; gap: 10px; }.gate-brand .brand-mark { background: #273831; }.live-pill { color: #9eafa6; letter-spacing: .05em; }.live-pill i { display: inline-block; width: 6px; height: 6px; margin-right: 7px; background: #63d59f; border-radius: 50%; }.scanner-stage { max-width: 520px; margin: 12vh auto 0; text-align: center; }.scanner-heading .eyebrow { color: #88a096; }.scanner-heading h1 { margin-bottom: 8px; font: 400 clamp(39px, 8vw, 64px) Georgia, serif; letter-spacing: -.05em; }.scanner-heading p:last-child { color: #9eafa6; font-size: 14px; }.reader-frame { position: relative; min-height: 310px; margin: 39px auto 18px; padding: 18px; overflow: hidden; background: #0c1512; border: 1px solid #43564d; }.reader-frame #gate-reader { min-height: 270px; }.reader-frame video { width: 100% !important; height: 270px !important; object-fit: cover; }.reader-frame img, .reader-frame__scan-region { display: none !important; }.corner { position: absolute; width: 32px; height: 32px; border-color: #63d59f; border-style: solid; }.corner.tl { top: 13px; left: 13px; border-width: 3px 0 0 3px; }.corner.tr { top: 13px; right: 13px; border-width: 3px 3px 0 0; }.corner.bl { bottom: 13px; left: 13px; border-width: 0 0 3px 3px; }.corner.br { right: 13px; bottom: 13px; border-width: 0 3px 3px 0; }.scanner-status, .gate-footer { color: #8fa39a; font-size: 11px; letter-spacing: .05em; }.divider { display: inline-block; height: 11px; margin: 0 9px; border-left: 1px solid #4d6056; vertical-align: -2px; }.scan-result { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 78vh; text-align: center; }.result-icon { display: grid; place-items: center; width: 86px; height: 86px; margin-bottom: 28px; color: white; background: rgba(255,255,255,.15); border-radius: 50%; }.result-icon svg { width: 48px; height: 48px; }.result-label { margin-bottom: 12px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; opacity: .75; }.scan-result h1 { max-width: 850px; margin: 0; font: 400 clamp(36px, 7vw, 74px) Georgia, serif; letter-spacing: -.04em; }.scan-result > p:last-child { margin-top: 25px; opacity: .7; font-size: 13px; }.gate-footer { display: flex; justify-content: center; gap: 7px; margin-top: 50px; }
 .fade-up { animation: rise .55s ease both; } @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 800px) { .site-shell { padding: 0 22px; }.nav-links a:first-child { display: none; }.registration-layout { display: block; min-height: auto; }.intro { padding: 72px 0 45px; }.intro h1 { font-size: clamp(66px, 19vw, 105px); }.event-meta { margin-top: 35px; }.form-column { padding: 25px 20px; }.site-footer { margin-top: 55px; font-size: 10px; }.site-footer span:last-child { display: none; }.admin-page { padding: 0 18px; }.portal-header { align-items: start; flex-direction: column; gap: 20px; }.admin-toolbar { flex-direction: column; }.secret-field { width: 100%; }.attendee-heading { align-items: start; flex-wrap: wrap; }.status-badge { margin-left: 59px; }.attendee-details { flex-direction: column; gap: 12px; }.issue-button { max-width: none; }.gate-screen { padding: 18px; }.scanner-stage { margin-top: 11vh; }.reader-frame { min-height: 260px; }.reader-frame video { height: 220px !important; } }
+/* Garba Night: local fonts, inline vector art, and native interactions. */
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+.garba-site { --ink:#f9e9cb; --muted:#ccb6ba; --line:#71384b; --coral:#f3c66e; --danger:#ffabb0; color:var(--ink); background:radial-gradient(ellipse at 80% 18%,#60223b 0,transparent 42%),#310f22; padding:0 max(22px,calc((100vw - 1200px)/2)); overflow:clip; }
+.garba-site .top-nav { padding:25px 0; border-bottom:1px solid #71384b; }
+.trinity-symbol { color:#edbf64; font-size:36px; }
+.wordmark > span:last-child { font-weight:800; letter-spacing:.12em; font-size:19px; }
+.wordmark small { display:block; font-size:8px; letter-spacing:.25em; margin-top:5px; font-weight:400; }
+.garba-site .nav-action { color:#f3cf8d; border-color:#99704a; min-height:44px; }
+.festival-hero { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:30px; padding:60px 0 45px; }
+.garba-site .eyebrow { color:#e1b975; line-height:1.6; }
+.garba-site .live-dot { background:#efbe62; box-shadow:0 0 0 4px #efbe6215; }
+.hero-copy h1 { margin:14px 0 24px; color:#efc675; font-size:clamp(90px,12vw,165px); font-weight:400; line-height:.77; letter-spacing:-.065em; }
+.hero-copy h1 > span { display:block; padding-top:13px; font-size:.72em; font-style:italic; letter-spacing:-.055em; }
+.title-star { display:inline-block; margin-left:22px; vertical-align:middle; font-size:.43em; font-style:normal; }
+.hero-tagline { margin:34px 0 14px; font-size:clamp(23px,2.6vw,32px); line-height:1.25; }
+.hero-description { max-width:370px; font:14px/1.75 Arial,sans-serif; color:#ccb6ba; }
+.hero-cta { display:inline-flex; align-items:center; justify-content:center; gap:30px; min-height:52px; padding:0 24px; margin-top:13px; border-radius:4px; background:#efc675; color:#361125; text-decoration:none; font:700 13px Arial,sans-serif; transition:background .2s,transform .2s; }
+.hero-cta:hover { background:#ffe1a1; transform:translateY(-2px); }
+.hero-caption { display:block; margin-top:15px; font:11px Arial,sans-serif; color:#bda0a6; }
+.art-stage { text-align:center; position:relative; }
+.art-label { font:10px Arial,sans-serif; letter-spacing:.3em; color:#d3ac72; }
+.garba-art { display:block; width:100%; max-width:500px; height:auto; margin:10px auto 0; }
+.art-note { font:italic 19px Georgia,serif; color:#e5bd80; }
+.event-strip { display:grid; grid-template-columns:1fr 1.2fr .8fr; padding:27px 0; border-top:1px solid #71384b; border-bottom:1px solid #71384b; }
+.event-strip > div { display:flex; align-items:center; gap:18px; padding:0 26px; border-right:1px solid #71384b; }
+.event-strip > div:first-child { padding-left:0; }.event-strip > div:last-child { border:0; }
+.event-strip svg { flex-shrink:0; color:#edbf64; width:24px; }
+.event-strip small,.event-strip strong,.event-strip span > span { display:block; }
+.event-strip small { font:9px Arial,sans-serif; letter-spacing:.17em; color:#cca979; margin-bottom:9px; }
+.event-strip strong { font-size:23px; font-weight:400; }.event-strip em { font:12px Arial,sans-serif; color:#c5a8af; }
+.event-strip span > span { font:12px Arial,sans-serif; margin-top:6px; color:#c5a8af; }
+.celebration-ribbon { margin:42px 0 0; padding:16px 0; border-block:1px solid #71384b; text-align:center; white-space:nowrap; font:11px Arial,sans-serif; letter-spacing:.3em; color:#d1a67a; overflow:hidden; }.celebration-ribbon span { padding:0 26px; color:#efc675; }
+.garba-site .registration-layout { grid-template-columns:minmax(0,1fr) minmax(0,480px); min-height:auto; gap:9%; padding:75px 0; align-items:start; scroll-margin-top:20px; }
+.registration-story h2 { font-weight:400; font-size:clamp(38px,4.3vw,58px); letter-spacing:-.035em; line-height:1.06; margin:24px 0; }.registration-story h2 em { color:#efc675; }
+.registration-story > p:not(.eyebrow) { max-width:370px; color:#ccb6ba; font:14px/1.8 Arial,sans-serif; }.registration-story .eyebrow { display:flex; align-items:center; gap:12px; }
+.entry-steps { list-style:none; padding:0; margin:34px 0; }.entry-steps li { display:flex; gap:18px; margin:24px 0; }.entry-steps li > span { display:grid; place-items:center; flex:0 0 36px; height:36px; border:1px solid #83513f; border-radius:50%; color:#efc675; font:11px Arial,sans-serif; }.entry-steps strong { font:600 14px Arial,sans-serif; }.entry-steps p { color:#c5a8af; font:12px/1.6 Arial,sans-serif; margin:6px 0 0; }
+.festive-note { display:flex; gap:14px; align-items:center; color:#e5bd80; font:italic 18px/1.5 Georgia,serif; border-top:1px solid #71384b; padding-top:26px; }
+.garba-site .form-column { background:#42172c; border:1px solid #82503f; border-radius:8px; padding:30px; box-shadow:0 18px 55px #18051033; min-width:0; }
+.garba-site .form-heading { padding-bottom:22px; }.garba-site .form-heading h2 { font-size:40px; }.garba-site .form-heading p:last-of-type { color:#ccb6ba; font:13px Arial,sans-serif; }
+.fee-pill { display:inline-block; padding:7px 10px; margin-top:15px; border:1px solid #99704a; border-radius:3px; color:#efc675; font:11px Arial,sans-serif; }
+.garba-site label { min-width:0; }.garba-site label > span { color:#d9bec4; font-size:10px; }
+.garba-site .input-wrap { border:1px solid #795064; border-radius:4px; padding:0 12px; color:#d4aa80; background:#341024; min-width:0; }
+.garba-site .input-wrap:focus-within { border-color:#efc675; box-shadow:0 0 0 3px #efc67518; }.garba-site .input-wrap svg { flex-shrink:0; }
+.garba-site input,.garba-site select { min-width:0; min-height:48px; color:#f9e9cb; font:16px Arial,sans-serif; }.garba-site input::placeholder { color:#ac8996; }.garba-site .country-code { color:#d9bec4; }
+.garba-site select { width:100%; padding:10px 30px 10px 12px; background:#341024; border:1px solid #795064; border-radius:4px; text-overflow:ellipsis; }.garba-site select:focus { outline:2px solid #efc675; outline-offset:2px; }.garba-site option { background:#341024; color:#f9e9cb; }
+.garba-site .primary-button { background:#efc675; color:#361125; border-radius:4px; min-height:52px; margin-top:24px; }.garba-site .primary-button:hover { background:#ffe1a1; }.garba-site .form-footnote { color:#c5a8af; font-size:11px; align-items:flex-start; }.garba-site .form-footnote svg { flex-shrink:0; }
+.garba-site .code-display { font-size:clamp(28px,8vw,58px); margin:24px 0; }.garba-site .copy-button { border-color:#99704a; border-radius:4px; min-height:44px; }.garba-site .notice { color:#f8e6c4; background:#653044; border:1px solid #82503f; border-radius:4px; margin-bottom:18px; }.garba-site .success-icon { background:#547c55; }
+.event-faq { max-width:780px; margin:0 auto 65px; }.event-faq details { border-bottom:1px solid #71384b; }.event-faq summary { padding:20px 30px 20px 0; cursor:pointer; font:15px/1.5 Arial,sans-serif; }.event-faq details p { color:#ccb6ba; font:14px/1.8 Arial,sans-serif; padding:0 20px 10px; }.event-faq details[open] summary { color:#efc675; }
+.garba-site .site-footer { color:#d3ac72; border-color:#71384b; font-size:10px; letter-spacing:.04em; gap:20px; }.footer-caption { display:block; font:italic 13px Georgia,serif; text-transform:none; margin-top:7px; }.site-footer > div { display:flex; gap:24px; }.site-footer a { color:#ccb6ba; text-decoration:none; display:inline-flex; align-items:center; gap:5px; min-height:44px; }
+a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #efc675; outline-offset:5px; }
+@media(max-width:800px) { .garba-site { padding:0 22px; }.festival-hero { padding:44px 0 30px; gap:8px; }.hero-copy h1 { font-size:clamp(78px,15vw,130px); }.hero-tagline { font-size:25px; }.art-label { font-size:8px; letter-spacing:.15em; }.event-strip > div { padding:0 15px; gap:10px; }.event-strip strong { font-size:19px; }.garba-site .registration-layout { display:grid; gap:36px; padding:50px 0; grid-template-columns:1fr; }.registration-story > p:not(.eyebrow) { max-width:none; }.entry-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:25px 0; }.entry-steps li { flex-direction:column; margin:0; }.entry-steps li > span { flex-basis:36px; width:36px; }.festive-note { display:none; }.garba-site .site-footer { margin-top:0; }.garba-site .site-footer > span:last-child { display:block; } }
+@media(max-width:540px) { .garba-site { padding:0 18px; }.garba-site .top-nav { padding:16px 0; }.wordmark > span:last-child { font-size:16px; }.trinity-symbol { font-size:30px; }.garba-site .nav-action { font-size:9px; letter-spacing:.03em; gap:4px; }.festival-hero { grid-template-columns:1fr; position:relative; padding-top:35px; }.hero-copy { z-index:1; }.hero-copy h1 { font-size:112px; max-width:330px; }.hero-tagline { font-size:24px; }.hero-description { max-width:300px; }.art-stage { margin:15px auto 0; width:100%; max-width:320px; }.art-label { display:none; }.garba-art { margin:0; }.art-note { font-size:16px; }.hero-cta { width:100%; justify-content:space-between; }.hero-caption { text-align:center; }.event-strip { grid-template-columns:1fr; padding:8px 0; }.event-strip > div,.event-strip > div:first-child { padding:18px 8px; border-right:0; border-bottom:1px solid #71384b; gap:20px; }.event-strip strong { font-size:23px; }.event-strip small { font-size:9px; }.event-strip > div:last-child { border:0; }.celebration-ribbon { margin-top:24px; font-size:9px; }.celebration-ribbon span { padding:0 15px; }.garba-site .registration-layout { padding:38px 0; }.registration-story h2 { font-size:40px; }.entry-steps { display:block; margin:25px 0 0; }.entry-steps li { flex-direction:row; margin-top:20px; gap:14px; }.garba-site .form-column { padding:25px 20px; }.garba-site .form-heading h2 { font-size:36px; }.event-faq { margin-bottom:35px; }.garba-site .site-footer { align-items:flex-start; flex-direction:column; gap:10px; padding:22px 0; }.site-footer > div { gap:28px; } }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none !important; transition:none !important; } }
+/* Supplied Trinity branding and Garba artwork, with original image proportions. */
+.trinity-logo { display:block; width:160px; height:auto; object-fit:contain; flex-shrink:0; }
+.garba-site .top-nav { padding:12px 0; }
+.hero-presenter { display:flex; justify-content:center; align-items:center; gap:14px; margin-bottom:14px; }
+.hero-logo { width:125px; }.hero-garba-image { display:block; width:100%; max-width:490px; height:auto; object-fit:contain; margin:0 auto 22px; }
+.art-stage { min-width:0; }.art-note { display:block; }
+.card-logo { width:100px; margin:-8px 0 18px; }
+.event-about { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:65px; align-items:center; margin-top:60px; padding:36px; border:1px solid #82503f; border-radius:12px; background:linear-gradient(125deg,#42172c,#361125); }
+.about-art { margin:0; padding:24px 22px 18px; background:#fff; border-radius:8px; max-width:370px; width:100%; justify-self:center; }
+.about-art img { display:block; width:100%; max-width:280px; height:auto; object-fit:contain; margin:auto; }
+.about-art figcaption { color:#5a2538; text-align:center; font:italic 17px Georgia,serif; padding-top:18px; }
+.about-copy h2 { font:400 clamp(34px,4vw,54px)/1.08 Georgia,serif; letter-spacing:-.035em; margin-bottom:24px; }.about-copy h2 em { color:#efc675; }
+.about-copy > p:not(.eyebrow) { font:14px/1.8 Arial,sans-serif; color:#ccb6ba; max-width:420px; }
+.about-highlights { display:flex; flex-wrap:wrap; gap:12px 22px; margin:25px 0; }.about-highlights span { display:inline-flex; gap:7px; align-items:center; color:#efc675; font:12px Arial,sans-serif; }
+.about-link { display:inline-flex; align-items:center; gap:10px; color:#f9e9cb; font:13px Arial,sans-serif; min-height:44px; text-underline-offset:6px; }
+.garba-site .site-footer > .footer-brand { display:block; }.footer-brand .trinity-logo { width:145px; }.footer-brand .footer-caption { margin:6px 0 0; color:#ccb6ba; }.footer-brand a { min-height:0; }
+.portal-brand { display:inline-block; padding:4px 14px; margin-bottom:20px; background:#310f22; border-radius:6px; }.portal-brand .trinity-logo { width:125px; }
+.gate-logo { width:100px; }.gate-brand { gap:16px; }
+@media(max-width:800px) { .event-about { gap:30px; padding:24px; }.about-art { padding:18px 16px; }.hero-presenter { flex-direction:column; gap:6px; }.hero-logo { width:100px; }.hero-presenter .art-label { display:block; font-size:8px; }.hero-garba-image { margin-bottom:16px; } }
+@media(max-width:540px) { .top-nav .trinity-logo { width:120px; }.hero-presenter { flex-direction:row; margin-bottom:8px; gap:12px; }.hero-logo { width:100px; }.hero-garba-image { max-width:320px; }.event-about { margin-top:30px; grid-template-columns:1fr; padding:22px 18px; gap:28px; }.about-art { max-width:270px; }.about-art img { max-width:230px; }.about-copy h2 { font-size:36px; }.about-copy .eyebrow { font-size:9px; }.about-highlights { gap:12px 16px; }.footer-brand .trinity-logo { width:125px; }.gate-logo { width:85px; }.gate-brand { gap:10px; font-size:9px; } }
+/* Requested section flow and compact spacing; retain existing theme. */
+.garba-site .top-nav { padding:6px 0; }
+.top-nav .trinity-logo { width:125px; }
+.festival-hero { padding-top:24px; }
+.crew-cta { margin:0 0 22px; }
+#entry-form { scroll-margin-top:24px; }
+.garba-site .form-heading .payment-note { margin:10px 0 0; color:#ccb6ba; font:12px/1.6 Arial,sans-serif; max-width:310px; }
+.event-strip .payment-note { max-width:230px; line-height:1.55; }
+.garba-site .registration-layout { padding-bottom:42px; }
+.event-about { margin-top:0; }
+.about-art { background:transparent; padding:0; }
+.about-art figcaption { color:#e5bd80; }
+@media(max-width:800px) { .festival-hero { padding-top:24px; }.garba-site .registration-layout { padding-bottom:36px; } }
+@media(max-width:540px) { .garba-site .top-nav { padding:6px 0; }.top-nav .trinity-logo { width:105px; }.festival-hero { padding-top:20px; }.crew-cta { margin-bottom:20px; }.event-about { margin-top:0; }.about-art { padding:0; } }
+.garba-site .celebration-ribbon { margin-bottom:32px; }
+/* Supplied festive pattern across the page; keep it behind content. */
+.garba-site { position:relative; isolation:isolate; }
+.garba-site::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:url("/images/garba-motif-pattern.webp") repeat; background-size:545px 548px; filter:invert(1) grayscale(1) sepia(1) saturate(2) brightness(2); mix-blend-mode:screen; opacity:.25; }
+.hero-garba-image { max-width:365px; max-height:490px; width:100%; height:auto; object-fit:contain; }
+@media(max-width:540px) { .garba-site::before { background-size:390px 392px; opacity:.19; }.hero-garba-image { max-width:270px; max-height:none; } }

@@ -1,6 +1,9 @@
 import { randomInt } from "node:crypto";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { departments, years } from "@/lib/event";
+
+export const runtime = "nodejs";
 
 const codeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -15,6 +18,11 @@ export async function POST(request: Request) {
     const sapid = typeof body.sapid === "string" ? body.sapid.trim() : "";
     const phno = typeof body.phno === "string" ? body.phno.trim() : "";
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const department = typeof body.department === "string" ? body.department : "";
+    const year = typeof body.year === "string" ? body.year : "";
+    if (!departments.some((value) => value === department) || !years.some((value) => value === year)) {
+      return NextResponse.json({ error: "Select a valid department and year of study." }, { status: 400 });
+    }
 
     if (!name || !sapid || !phno || !email || !/^\S+@\S+\.\S+$/.test(email)) {
       return NextResponse.json({ error: "Enter a valid name, SAP ID, phone number, and email." }, { status: 400 });
@@ -33,7 +41,7 @@ export async function POST(request: Request) {
       const code = createCode();
       const { data, error } = await supabase
         .from("registrations")
-        .insert({ name, sapid, phno, email, code })
+        .insert({ name, sapid, phno, email, department, year: Number(year), code })
         .select("id, code")
         .single();
 

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Entry / 26 | Event Pass Registration",
-  description: "Register for your event entry pass.",
+  title: "Garba Night | DJSCE Trinity · 9 October 2026",
+  description: "Join DJSCE Trinity for Garba Night on 9 October 2026 at Mukesh Patel Hall (Underground). Entry ₹149. Register for your event code.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

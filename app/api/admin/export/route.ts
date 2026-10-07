@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { isAdminSecretValid } from "@/lib/security";
 
-const columns = ["name", "sapid", "phno", "email", "code", "is_approved", "is_entered", "created_at"] as const;
+export const runtime = "nodejs";
+
+const columns = ["name", "sapid", "phno", "email", "department", "year", "code", "is_approved", "is_entered", "created_at"] as const;
 
 function csvValue(value: unknown) {
   const text = value == null ? "" : String(value);
