@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const ts = require('typescript');
 
 function harness() {
-  const env = { NODE_ENV: 'production', ADMIN_SECRET: 'test-desk-password-123', GATE_SECRET: 'test-gate-password-456' };
+  const env = { NODE_ENV: 'production', ADMIN_SECRET: 'test-desk-password-123', GATE_SECRET: 'test-gate-password-456', SUPER_ADMIN_SECRET: 'test-owner-password-789' };
   const jar = new Map(), records = [];
   let allowed = true, limiterError = null, sensitiveQueries = 0;
   const database = { rpc: async () => ({ data: allowed, error: limiterError }), from(table) {
@@ -31,6 +31,8 @@ function harness() {
       if(name==='@/lib/supabase') return {supabase:database};
       if(name==='@/lib/staff-auth') return load('lib/staff-auth.ts');
       if(name==='@/lib/security') return load('lib/security.ts');
+      if(name==='@/lib/pass-email') return {issuePassEmail(){throw new Error('Unexpected email');}};
+      if(name==='@/lib/mail-settings') return {saveGmailSettings(){throw new Error('Unexpected settings update');}};
       if(name==='@/lib/mailer') return {mailFrom:'test@example.com',transporter:{sendMail(){throw new Error('Unexpected email');}}};
       return require(name);
     }
@@ -65,11 +67,19 @@ test('missing, tampered, expired, wrong-role and rotated-password sessions are r
  await assert.rejects(h.auth.requireStaffPage('gate'),/REDIRECT:\/staff\/login\?role=gate/);
 });
 test('all desk and gate APIs reject unauthenticated callers before database access',async()=>{
- const h=harness();for(const path of ['admin/verify','admin/approve','gate/scan']) { const response=await h.load('app/api/'+path+'/route.ts').POST(h.request('/api/'+path,{code:'ABCD23',id:'00000000-0000-0000-0000-000000000000'}));assert.equal(response.status,401); }
+ const h=harness();for(const path of ['admin/verify','admin/approve','gate/scan','super-admin/mail','super-admin/retry','super-admin/sender']) { const response=await h.load('app/api/'+path+'/route.ts').POST(h.request('/api/'+path,{code:'ABCD23',id:'00000000-0000-0000-0000-000000000000'}));assert.equal(response.status,401); }
  assert.equal((await h.load('app/api/admin/export/route.ts').GET(new Request('https://event.example/api/admin/export'))).status,401);assert.equal(h.getSensitiveQueries(),0);
 });
 test('logout revokes server sessions and clears both cookies; cross-origin logout is blocked',async()=>{
  const h=harness(),token=await h.auth.newSession('desk');h.jar.set(h.auth.cookieName('desk'),token);const logout=h.load('app/api/staff/logout/route.ts').POST;
  assert.equal((await logout(h.request('/api/staff/logout',{},'https://attacker.example'))).status,403);assert.equal(h.records.length,1);
  const response=await logout(h.request('/api/staff/logout',{}));assert.equal(response.status,200);assert.equal(h.records.length,0);assert.equal(await h.auth.staffSession('desk'),false);assert.equal(response.cookies.get('__Host-trinity_desk').value,'');assert.equal(response.cookies.get('__Host-trinity_gate').value,'');
+});
+test('desk and gate sessions cannot change sender credentials or retry uncertain emails',async()=>{
+ const h=harness(); for(const role of ['desk','gate']) { const token=await h.auth.newSession(role);h.jar.set(h.auth.cookieName(role),token); }
+ for(const path of ['super-admin/sender','super-admin/retry','super-admin/mail']) assert.equal((await h.load('app/api/'+path+'/route.ts').POST(h.request('/api/'+path,{}))).status,401);
+ assert.equal((await h.load('app/api/super-admin/mail/route.ts').GET(new Request('https://event.example/api/super-admin/mail'))).status,401);
+ const token=await h.auth.newSession('super');h.jar.set(h.auth.cookieName('super'),token);assert.equal(await h.auth.staffSession('super'),true);
+ assert.equal((await h.load('app/api/super-admin/sender/route.ts').POST(h.request('/api/super-admin/sender',{},'https://attacker.example'))).status,403);
+ h.env.SUPER_ADMIN_SECRET=h.env.ADMIN_SECRET;assert.equal(h.auth.authConfigured('super'),false);assert.equal(await h.auth.staffSession('super'),false);
 });

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const code = normalizeCode(rawCode);
     if (!/^[A-Z2-9]{6}$/.test(code)) return NextResponse.json({ error: "Enter a valid 6-character code." }, { status: 400 });
 
-    const { data, error } = await supabase.from("registrations").select("id, name, sapid, email, phno, department, year, code, is_approved").eq("code", code).maybeSingle();
+    const { data, error } = await supabase.from("registrations").select("id, name, sapid, email, phno, department, year, code, is_approved, is_entered, email_status, email_last_note, email_attempt_started_at").eq("code", code).maybeSingle();
     if (error) throw error;
     if (!data) return NextResponse.json({ error: "No registration found for that code." }, { status: 404 });
     return NextResponse.json({ registration: data });

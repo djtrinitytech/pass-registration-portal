@@ -5,14 +5,15 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export type StaffRole = "desk" | "gate";
+export type StaffRole = "desk" | "gate" | "super";
 export const sessionSeconds = 2 * 60 * 60;
 export function staffPassword(role: StaffRole) {
-  return role === "desk" ? process.env.ADMIN_SECRET : process.env.GATE_SECRET;
+  return role === "desk" ? process.env.ADMIN_SECRET : role === "gate" ? process.env.GATE_SECRET : process.env.SUPER_ADMIN_SECRET;
 }
 export function authConfigured(role: StaffRole) {
   const secret = staffPassword(role);
-  return Boolean(secret && secret.length >= 12 && (role !== "gate" || secret !== process.env.ADMIN_SECRET));
+  const otherSecrets = (["desk", "gate", "super"] as const).filter(other => other !== role).map(staffPassword);
+  return Boolean(secret && secret.length >= 12 && !otherSecrets.includes(secret));
 }
 export function digest(value: string) { return createHash("sha256").update(value).digest("hex"); }
 export function passwordValid(password: unknown, role: StaffRole) {

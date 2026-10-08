@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin not allowed." }, { status: 403 });
   try {
     const body = await request.json();
-    if (body.role !== "desk" && body.role !== "gate") return NextResponse.json({ error: "Select a staff role." }, { status: 400 });
+    if (body.role !== "desk" && body.role !== "gate" && body.role !== "super") return NextResponse.json({ error: "Select a staff role." }, { status: 400 });
     const role = body.role;
     if (!authConfigured(role)) return NextResponse.json({ error: "Staff sign-in has not been configured. Contact the organiser." }, { status: 503 });
     // On Vercel this header is set by the trusted proxy. Unknown clients share a conservative bucket.
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     if (allowed !== true) return NextResponse.json({ error: "Too many sign-in attempts. Try again in 15 minutes." }, { status: 429, headers: { "Retry-After": "900" } });
     if (typeof body.password !== "string" || body.password.length > 256 || !passwordValid(body.password, role)) return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
     const token = await newSession(role);
-    const response = NextResponse.json({ destination: role === "desk" ? "/admin" : "/gate" }, { headers: { "Cache-Control": "no-store" } });
+    const response = NextResponse.json({ destination: role === "desk" ? "/admin" : role === "gate" ? "/gate" : "/super-admin" }, { headers: { "Cache-Control": "no-store" } });
     response.cookies.set(cookieName(role), token, { ...cookieOptions, maxAge: sessionSeconds });
     return response;
   } catch (error) {
