@@ -20,3 +20,4 @@ create index if not exists idx_reg_code on registrations(code);
 -- Also upgrades an existing event database without changing existing attendees.
 alter table registrations add column if not exists department text;
 alter table registrations add column if not exists year smallint check (year between 1 and 4);
+notify pgrst, 'reload schema';

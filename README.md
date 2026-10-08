@@ -42,3 +42,5 @@ The public page uses the event poster details: DJSCE Trinity Garba Night, Friday
 Before deploying this version, run the final two ALTER TABLE statements in `supabase-schema.sql` in the Supabase SQL editor (or run the whole idempotent file). These add department and year to existing registrations. New submissions require one of the eight listed departments and a year from 1 to 4; both fields appear in desk verification and CSV exports. Existing attendees remain valid.
 
 The public design uses optimized WebP artwork, a subtle repeating motif background, system fonts, native selects and expandable FAQs. It has mobile layouts and respects reduced-motion preferences.
+
+For existing databases, apply supabase/migrations/20261008_registration_department_year.sql in Supabase SQL Editor before deploying. It adds the missing columns and reloads the REST schema cache. Missing columns otherwise prevent new registrations.

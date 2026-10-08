@@ -54,6 +54,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not generate a unique registration code. Try again." }, { status: 503 });
   } catch (error) {
     console.error("Registration failed", error);
+    const databaseCode = typeof error === "object" && error !== null && "code" in error ? error.code : null;
+    if (databaseCode === "42703" || databaseCode === "PGRST204") {
+      return NextResponse.json({ error: "Registration setup is incomplete. Please contact the event desk." }, { status: 503 });
+    }
     return NextResponse.json({ error: "Registration is temporarily unavailable." }, { status: 500 });
   }
 }
