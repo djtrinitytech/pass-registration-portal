@@ -52,7 +52,7 @@ For existing databases, apply supabase/migrations/20261008_registration_departme
 
 Apply `supabase/migrations/20261008_staff_auth.sql` in Supabase SQL Editor before deploying staff authentication. The migration stores only hashed session tokens and hashed login-rate buckets; it locks both tables and the throttling function to server access.
 
-In Vercel environment settings, set `ADMIN_SECRET` to a unique desk password of at least 12 characters and `GATE_SECRET` to a different gate password of at least 12 characters. Use long random passwords. These values must never have a `NEXT_PUBLIC_` prefix. Update the same values in your ignored local `.env` for local staff access. Do not paste passwords into chat or commit them. Redeploy after environment changes. Optional `STAFF_AUTH_ORIGIN` must exactly match the website origin (without a trailing slash).
+In Vercel environment settings, set `ADMIN_SECRET` to a unique desk password of at least 4 characters and `GATE_SECRET` to a different gate password of at least 4 characters. Use long random passwords. These values must never have a `NEXT_PUBLIC_` prefix. Update the same values in your ignored local `.env` for local staff access. Do not paste passwords into chat or commit them. Redeploy after environment changes. Optional `STAFF_AUTH_ORIGIN` must exactly match the website origin (without a trailing slash).
 
 `/admin` and `/gate` redirect to a role-specific staff sign-in. Every desk and gate API checks the corresponding server session. Login allows eight attempts per trusted client IP in a 15-minute window (an unknown address shares one conservative bucket). Cookies are HttpOnly, Secure in production, SameSite Strict, and expire after two hours. Password changes invalidate sessions for that role; sign-out deletes server sessions. Staff routes cannot be framed and are not cached. Expired session rows may be periodically removed with `delete from public.staff_sessions where expires_at < now();` in the SQL editor.
 
@@ -62,7 +62,7 @@ Apply `supabase/migrations/20261008_email_delivery.sql` after the staff-auth mig
 
 In Vercel → Project Settings → Environment Variables, add:
 
-- `SUPER_ADMIN_SECRET`: a long random owner password, different from both desk and gate passwords (at least 12 characters). Share it only with the owner.
+- `SUPER_ADMIN_SECRET`: a long random owner password, different from both desk and gate passwords (at least 4 characters). Share it only with the owner.
 - `MAIL_SETTINGS_KEY`: 32 random bytes encoded as 64 hexadecimal characters. Generate privately with `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`. Keep this key stable and backed up securely. Changing or losing it makes saved sender credentials unreadable.
 
 Neither variable may use a `NEXT_PUBLIC_` prefix. Set them for Production, then redeploy. Keep existing Supabase, `ADMIN_SECRET`, `GATE_SECRET`, `GMAIL_USER`, `GMAIL_APP_PASSWORD`, and `MAIL_FROM` values. The Gmail environment settings are the initial sender until an owner saves a verified sender in the portal. `MAIL_FROM` should match that initial Gmail account.

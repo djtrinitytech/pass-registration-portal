@@ -50,7 +50,13 @@ test('login rejects weak configuration, bad passwords, cross-origin requests and
  assert.equal((await login(h.request('/api/staff/login',{role:'desk',password:'wrong'}))).status,401);
  h.setAllowed(false);assert.equal((await login(h.request('/api/staff/login',{role:'desk',password:h.env.ADMIN_SECRET}))).status,429);
  h.setAllowed(true);h.setLimiterError({code:'PGRST202'});assert.equal((await login(h.request('/api/staff/login',{role:'desk',password:h.env.ADMIN_SECRET}))).status,503);
- h.env.ADMIN_SECRET='weak';assert.equal((await login(h.request('/api/staff/login',{role:'desk',password:'weak'}))).status,503);
+ h.env.ADMIN_SECRET='abc';assert.equal((await login(h.request('/api/staff/login',{role:'desk',password:'abc'}))).status,503);
+});
+test('four-character passwords are accepted for each role; shared passwords remain rejected',async()=>{
+ const h=harness();h.env.ADMIN_SECRET='desk';h.env.GATE_SECRET='gate';h.env.SUPER_ADMIN_SECRET='boss';
+ const login=h.load('app/api/staff/login/route.ts').POST;
+ for(const [role,password] of [['desk','desk'],['gate','gate'],['super','boss']]) assert.equal((await login(h.request('/api/staff/login',{role,password}))).status,200);
+ h.env.SUPER_ADMIN_SECRET='desk';assert.equal((await login(h.request('/api/staff/login',{role:'super',password:'desk'}))).status,503);
 });
 test('successful login stores only a token hash and sets secure, HttpOnly, scoped cookies',async()=>{
  const h=harness();const r=await h.load('app/api/staff/login/route.ts').POST(h.request('/api/staff/login',{role:'desk',password:h.env.ADMIN_SECRET}));

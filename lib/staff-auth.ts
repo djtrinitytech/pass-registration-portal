@@ -13,7 +13,7 @@ export function staffPassword(role: StaffRole) {
 export function authConfigured(role: StaffRole) {
   const secret = staffPassword(role);
   const otherSecrets = (["desk", "gate", "super"] as const).filter(other => other !== role).map(staffPassword);
-  return Boolean(secret && secret.length >= 12 && !otherSecrets.includes(secret));
+  return Boolean(secret && secret.length >= 4 && !otherSecrets.includes(secret));
 }
 export function digest(value: string) { return createHash("sha256").update(value).digest("hex"); }
 export function passwordValid(password: unknown, role: StaffRole) {
