@@ -6,12 +6,15 @@ const vm = require('node:vm');
 const ts = require('typescript');
 function harness({ state = 'claimed', mailError, accepted = ['attendee@example.com'], finishError, claimError, qrError } = {}) {
   const calls = [], messages = [];
-  const student = { id: 'uuid', code: 'ABCD23', name: '<script>bad</script>', email: 'attendee@example.com', email_attempt_id: 'attempt' };
+  const student = { id: 'uuid', code: 'ABCD23', sapid: '60018250011', name: '<script>bad</script>', email: 'attendee@example.com', email_attempt_id: 'attempt' };
   const database = { async rpc(name, args) { calls.push({ name, args }); return name === 'claim_pass_email' ? { data: { state, student, message: 'Blocked' }, error: claimError } : { error: finishError }; } };
   const testModule = { exports: {} };
   const code = ts.transpileModule(fs.readFileSync('lib/pass-email.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
+  const templateModule = { exports: {} };
+  const templateCode = ts.transpileModule(fs.readFileSync('lib/pass-email-template.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
+  vm.runInNewContext(templateCode, { module: templateModule, exports: templateModule.exports, require: n => n === 'server-only' ? {} : require(n), process });
   const mocks = { 'server-only': {}, '@/lib/supabase': { supabase: database }, 'qrcode': { async toDataURL() { if (qrError) throw qrError; return 'data:image/png;base64,cXI='; } }, '@/lib/mailer': { async getMailer() { return { from: 'sender@gmail.com', senderKey: 'sender-hash', transporter: { close() {}, async sendMail(message) { messages.push(message); if (mailError) throw mailError; return { accepted }; } } }; } } };
-  vm.runInNewContext(code, { module: testModule, exports: testModule.exports, require: n => mocks[n], console: { error() {} } });
+  vm.runInNewContext(code, { module: testModule, exports: testModule.exports, require: n => n === '@/lib/pass-email-template' ? templateModule.exports : mocks[n], console: { error() {} } });
   return { issue: testModule.exports.issuePassEmail, calls, messages };
 }
 test('SMTP acceptance is recorded, QR is attached and attendee HTML is escaped', async () => {
@@ -19,6 +22,9 @@ test('SMTP acceptance is recorded, QR is attached and attendee HTML is escaped',
   assert.equal(result.status, 200); assert.equal(h.calls[1].args.outcome, 'sent');
   assert.equal(h.calls[0].args.sender_key, 'sender-hash');
   assert.match(h.messages[0].html, /&lt;script&gt;/); assert.doesNotMatch(h.messages[0].html, /<script>/); assert.equal(h.messages[0].attachments[0].encoding, 'base64');
+  assert.match(h.messages[0].html, /Friday, 9 October 2026/);assert.match(h.messages[0].html, /60018250011/);
+  assert.equal(h.messages[0].attachments.length, 3); assert.equal(h.messages[0].attachments[1].cid, 'trinity-logo'); assert.ok(h.messages[0].attachments[1].content.length > 0);
+  assert.match(h.messages[0].text, /Mukesh Patel Hall/);
 });
 test('explicit SMTP rejection is failed and can be retried; unknown timeout requires owner review', async () => {
   const failed = harness({ mailError: { code: 'EENVELOPE', responseCode: 550 } }); assert.equal((await failed.issue('ABCD23')).status, 502); assert.equal(failed.calls[1].args.outcome, 'failed');

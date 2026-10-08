@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    "/api/admin/approve": ["./public/images/*-email.png"],
+    "/api/super-admin/retry": ["./public/images/*-email.png"],
+  },
   async headers() {
     const headers = [
       { key: "X-Frame-Options", value: "DENY" },

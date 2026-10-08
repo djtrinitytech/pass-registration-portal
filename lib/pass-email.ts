@@ -2,10 +2,10 @@ import "server-only";
 import QRCode from "qrcode";
 import { supabase } from "@/lib/supabase";
 import { getMailer } from "@/lib/mailer";
+import { passEmailAssets, passEmailContent } from "@/lib/pass-email-template";
 
 export type EmailStatus = "pending" | "sending" | "sent" | "failed" | "unknown";
 type ClaimedStudent = { id: string; name: string; email: string; sapid: string; code: string; email_attempt_id: string };
-function escapeHtml(value: string) { return value.replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]!)); }
 export async function issuePassEmail(code: string, allowUncertain = false) {
   const { transporter, from, senderKey } = await getMailer();
   const { data, error } = await supabase.rpc("claim_pass_email", { registration_code: code, allow_uncertain: allowUncertain, sender_key: senderKey });
@@ -15,12 +15,11 @@ export async function issuePassEmail(code: string, allowUncertain = false) {
   let status: EmailStatus = "failed", note = "Email could not be prepared. It can be retried.", smtpAccepted = false, smtpStarted = false;
   try {
     const qrDataUrl = await QRCode.toDataURL(student.id, { errorCorrectionLevel: "M", margin: 1, width: 520 });
+    const assets = await passEmailAssets();
     smtpStarted = true;
     const result = await transporter.sendMail({
-      from, to: student.email, subject: "Your Garba Night entry pass",
-      text: `Your pass is approved. Show the attached QR code at the gate. Registration code: ${student.code}`,
-      html: `<div style="font-family:Arial,sans-serif"><h2>Entry pass approved</h2><p>Hello ${escapeHtml(student.name)}, your event pass is ready. Show the QR code at the gate.</p><img src="cid:event-pass-qr" alt="Event entry QR code" width="320" /><p>Registration code: <strong>${student.code}</strong></p></div>`,
-      attachments: [{ filename: "event-pass-qr.png", content: qrDataUrl.split(",")[1], encoding: "base64", cid: "event-pass-qr" }],
+      from, to: student.email, ...passEmailContent(student),
+      attachments: [{ filename: "event-pass-qr.png", content: qrDataUrl.split(",")[1], encoding: "base64", cid: "event-pass-qr" }, ...assets],
     });
     smtpAccepted = result.accepted.some(address => String(address).toLowerCase() === student.email.toLowerCase());
     status = smtpAccepted ? "sent" : "failed";

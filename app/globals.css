@@ -175,3 +175,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #
 .owner-sender label { display:grid; gap:8px; }
 .owner-sender input { width:100%; padding:14px; border:1px solid #aaa; border-radius:6px; background:white; color:#222; min-height:48px; }
 .owner-sender button { justify-self:start; }
+.staff-logout { flex-wrap:wrap; }
+.staff-logout a { display:inline-flex; align-items:center; padding:10px 16px; min-height:44px; border:1px solid currentColor; border-radius:4px; color:inherit; }
+.code-search input { flex:1; min-width:0; width:100%; font-size:16px; }

@@ -76,3 +76,11 @@ Failed, explicitly rejected emails can be retried by desk staff or the owner. Un
 Optional transactional SMTP configuration: set `SMTP_HOST`, `SMTP_PORT` (465 or 587), `SMTP_USER`, `SMTP_PASSWORD`, and `MAIL_FROM` to the provider's verified sender. Saved portal Gmail credentials take precedence; remove the singleton row in `mail_sender_settings` through the Supabase SQL Editor to return to the environment sender. Do not change `MAIL_SETTINGS_KEY` as a way to clear sender settings.
 
 Checks: `node tests/staff-auth.test.cjs`, `node tests/pass-email.test.cjs`, `node tests/mail-settings.test.cjs`, `npm run lint`, `npm run build`. Test SMTP is mocked; no attendee emails are sent by these tests.
+
+### Desk lookup and branded pass email
+
+Desk staff can search by a six-character registration code or numeric SAP ID in the same field. The existing SAP ID index supports these lookups; no database migration is needed. Owner email controls appear beside Sign out.
+
+Pass emails use Trinity branding, burgundy/gold styling, event date and venue, attendee code/SAP ID, the entry QR, and Garba artwork. HTML uses presentation tables and inline styles, with a plain-text alternative. The QR, logo, and artwork are embedded attachments; email PNGs are explicitly included in the Vercel server-function bundle. Email apps may still hide images according to their own settings. New emails use this design; previously sent messages remain unchanged.
+
+Additional lookup checks: `node tests/desk-search.test.cjs`.
