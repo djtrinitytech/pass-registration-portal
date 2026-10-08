@@ -153,3 +153,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #
   .crew-form-first .crew-heading { grid-column:1 / -1; }
   .crew-form-first .crew-instructions { padding-top:12px; }
 }
+.staff-login-page { display:grid; place-items:center; padding-block:40px; }
+.staff-login-card { width:100%; max-width:430px; padding:30px; border:1px solid #82503f; border-radius:8px; background:#42172c; }
+.staff-login-card h1 { font-size:36px; font-weight:400; margin-bottom:14px; }
+.staff-login-card > p:not(.eyebrow) { color:#ccb6ba; font:14px/1.7 Arial,sans-serif; }
+.staff-login-card label { display:block; margin-top:24px; }
+.staff-login-card a { display:inline-block; min-height:44px; color:#efc675; font:13px/44px Arial,sans-serif; }
+.staff-login-card .staff-session-note { margin-top:22px; font-size:12px !important; }
+.staff-logout { display:flex; justify-content:flex-end; gap:12px; align-items:center; font:12px Arial,sans-serif; margin-bottom:16px; }
+.staff-logout button { padding:10px 16px; min-height:44px; border:1px solid currentColor; border-radius:4px; color:inherit; background:transparent; }
+@media(max-width:540px) { .staff-login-card { padding:24px 20px; } }

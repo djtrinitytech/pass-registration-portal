@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async headers() {
+    const headers = [
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "same-origin" },
+      { key: "Cache-Control", value: "no-store" },
+    ];
+    return ["/admin", "/gate", "/staff/:path*", "/api/admin/:path*", "/api/gate/:path*", "/api/staff/:path*"].map(source => ({ source, headers }));
+  },
 };
 
 export default nextConfig;

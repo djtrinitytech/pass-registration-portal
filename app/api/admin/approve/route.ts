@@ -1,15 +1,17 @@
+import { staffApiError } from "@/lib/staff-auth";
 import QRCode from "qrcode";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { isAdminSecretValid, normalizeCode } from "@/lib/security";
+import { normalizeCode } from "@/lib/security";
 import { mailFrom, transporter } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const authError = await staffApiError(request, "desk");
+  if (authError) return authError;
   try {
-    const { secret, code: rawCode } = await request.json();
-    if (!isAdminSecretValid(secret)) return NextResponse.json({ error: "Invalid admin PIN" }, { status: 401 });
+    const { code: rawCode } = await request.json();
     const code = normalizeCode(rawCode);
 
     const { data: student, error: updateError } = await supabase

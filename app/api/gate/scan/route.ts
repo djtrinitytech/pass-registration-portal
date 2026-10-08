@@ -1,9 +1,12 @@
+import { staffApiError } from "@/lib/staff-auth";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const authError = await staffApiError(request, "gate");
+  if (authError) return authError;
   try {
     const { id } = await request.json();
     if (typeof id !== "string" || !/^[0-9a-f-]{36}$/i.test(id)) return NextResponse.json({ status: "invalid", message: "INVALID PASS" }, { status: 400 });

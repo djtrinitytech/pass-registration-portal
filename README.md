@@ -29,6 +29,7 @@ Add these Production environment variables in **Project Settings → Environment
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `ADMIN_SECRET`
+- `GATE_SECRET`
 - `GMAIL_USER`
 - `GMAIL_APP_PASSWORD`
 - `MAIL_FROM`
@@ -44,3 +45,11 @@ Before deploying this version, run the final two ALTER TABLE statements in `supa
 The public design uses optimized WebP artwork, a subtle repeating motif background, system fonts, native selects and expandable FAQs. It has mobile layouts and respects reduced-motion preferences.
 
 For existing databases, apply supabase/migrations/20261008_registration_department_year.sql in Supabase SQL Editor before deploying. It adds the missing columns and reloads the REST schema cache. Missing columns otherwise prevent new registrations.
+
+### Protected staff access
+
+Apply `supabase/migrations/20261008_staff_auth.sql` in Supabase SQL Editor before deploying staff authentication. The migration stores only hashed session tokens and hashed login-rate buckets; it locks both tables and the throttling function to server access.
+
+In Vercel environment settings, set `ADMIN_SECRET` to a unique desk password of at least 12 characters and `GATE_SECRET` to a different gate password of at least 12 characters. Use long random passwords. These values must never have a `NEXT_PUBLIC_` prefix. Update the same values in your ignored local `.env` for local staff access. Do not paste passwords into chat or commit them. Redeploy after environment changes. Optional `STAFF_AUTH_ORIGIN` must exactly match the website origin (without a trailing slash).
+
+`/admin` and `/gate` redirect to a role-specific staff sign-in. Every desk and gate API checks the corresponding server session. Login allows eight attempts per trusted client IP in a 15-minute window (an unknown address shares one conservative bucket). Cookies are HttpOnly, Secure in production, SameSite Strict, and expire after two hours. Password changes invalidate sessions for that role; sign-out deletes server sessions. Staff routes cannot be framed and are not cached. Expired session rows may be periodically removed with `delete from public.staff_sessions where expires_at < now();` in the SQL editor.

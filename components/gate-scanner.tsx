@@ -1,6 +1,7 @@
 "use client";
 
 
+import { StaffLogout } from "@/components/staff-logout";
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, RotateCcw, ShieldAlert } from "lucide-react";
 
@@ -23,6 +24,7 @@ export function GateScanner() {
         await scanner.stop();
         try {
           const response = await fetch("/api/gate/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: decodedText }) });
+          if (response.status === 401) { active = false; window.location.assign("/staff/login?role=gate"); return; }
           const data = await response.json();
           setResult({ tone: response.ok ? "success" : "danger", message: data.message });
         } catch { setResult({ tone: "danger", message: "Scanner service unavailable." }); }
@@ -34,5 +36,5 @@ export function GateScanner() {
     return () => { active = false; scannerRef.current?.stop().catch(() => undefined); scannerRef.current?.clear(); };
   }, []);
 
-  return <main className={`gate-screen ${result?.tone ?? ""}`}><div className="gate-topbar"><div className="gate-brand"><span>ENTRY CONTROL</span></div><span className="live-pill"><i /> {ready ? "Scanner live" : "Stand by"}</span></div>{result ? <section className="scan-result"><div className="result-icon">{result.tone === "success" ? <CheckCircle2 /> : <ShieldAlert />}</div><p className="result-label">{result.tone === "success" ? "Access cleared" : "Access denied"}</p><h1>{result.message}</h1><p>Returning to scanner in a moment...</p></section> : <section className="scanner-stage"><div className="scanner-heading"><p className="eyebrow">Gate A / Live verification</p><h1>Scan entry pass</h1><p>Point the back camera at the attendee QR code.</p></div><div className="reader-frame"><div id="gate-reader" /><span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" /></div><div className="scanner-status"><span className="pulse-dot" /> Waiting for a pass <span className="divider" /> Keep the code inside the frame</div></section>}<p className="gate-footer"><RotateCcw size={14} /> Duplicate scans are blocked automatically</p></main>;
+  return <main className={`gate-screen ${result?.tone ?? ""}`}><StaffLogout /><div className="gate-topbar"><div className="gate-brand"><span>ENTRY CONTROL</span></div><span className="live-pill"><i /> {ready ? "Scanner live" : "Stand by"}</span></div>{result ? <section className="scan-result"><div className="result-icon">{result.tone === "success" ? <CheckCircle2 /> : <ShieldAlert />}</div><p className="result-label">{result.tone === "success" ? "Access cleared" : "Access denied"}</p><h1>{result.message}</h1><p>Returning to scanner in a moment...</p></section> : <section className="scanner-stage"><div className="scanner-heading"><p className="eyebrow">Gate A / Live verification</p><h1>Scan entry pass</h1><p>Point the back camera at the attendee QR code.</p></div><div className="reader-frame"><div id="gate-reader" /><span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" /></div><div className="scanner-status"><span className="pulse-dot" /> Waiting for a pass <span className="divider" /> Keep the code inside the frame</div></section>}<p className="gate-footer"><RotateCcw size={14} /> Duplicate scans are blocked automatically</p></main>;
 }

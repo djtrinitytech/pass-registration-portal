@@ -1,6 +1,7 @@
+import { staffApiError } from "@/lib/staff-auth";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { isAdminSecretValid } from "@/lib/security";
+
 
 export const runtime = "nodejs";
 
@@ -12,9 +13,10 @@ function csvValue(value: unknown) {
 }
 
 export async function GET(request: Request) {
+  const authError = await staffApiError(request, "desk");
+  if (authError) return authError;
   try {
-    const secret = request.headers.get("x-admin-secret");
-    if (!isAdminSecretValid(secret)) return NextResponse.json({ error: "Invalid admin PIN" }, { status: 401 });
+
     const { data, error } = await supabase.from("registrations").select(columns.join(",")).order("created_at", { ascending: false });
     if (error) throw error;
 
