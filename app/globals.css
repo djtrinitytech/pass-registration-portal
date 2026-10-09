@@ -178,3 +178,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:2px solid #
 .staff-logout { flex-wrap:wrap; }
 .staff-logout a { display:inline-flex; align-items:center; padding:10px 16px; min-height:44px; border:1px solid currentColor; border-radius:4px; color:inherit; }
 .code-search input { flex:1; min-width:0; width:100%; font-size:16px; }
+.scan-popup-backdrop { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.5); }
+.scan-popup { position:relative; width:100%; max-width:430px; padding:34px 24px 24px; border:1px solid rgba(255,255,255,.25); border-radius:18px; text-align:center; box-shadow:0 16px 60px rgba(0,0,0,.35); cursor:pointer; }
+.scan-popup.success { background:#164a38; }.scan-popup.danger { background:#5b2422; }
+.scan-popup .result-icon { width:64px; height:64px; margin:0 auto 18px; }.scan-popup .result-icon svg { width:36px; height:36px; }
+.scan-popup h2 { margin:0 0 14px; font:400 32px Georgia,serif; }.scan-popup p { line-height:1.6; overflow-wrap:anywhere; }
+.scan-popup-hint { margin-top:20px; font-size:12px; color:#ecf2ed; opacity:.8; }
+.scan-popup-close { position:absolute; top:8px; right:8px; display:grid; place-items:center; width:44px; height:44px; color:white; border:0; background:transparent; border-radius:50%; }
+.camera-error { color:#ffd3c5; font-size:14px; line-height:1.6; }.camera-error button { margin-top:12px; padding:12px 20px; min-height:44px; color:white; background:#314e41; border:1px solid #789c88; border-radius:6px; }
